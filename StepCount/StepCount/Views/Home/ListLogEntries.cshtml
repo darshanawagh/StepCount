@@ -1,0 +1,49 @@
+﻿@model StepCount.Models.dbo_Participants
+
+@{
+    ViewBag.Title = "ListLogEntries";
+    ViewBag.TotalCount = @Model.LogEntries != null ? @Model.LogEntries.Sum(x => x.Steps) : 0;
+}
+
+<h2>List Log Entries</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateLogEntry")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Date
+        </th>
+        <th>
+            Steps
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.LogEntries) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LogDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Steps)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditLogEntry", new { id=item.Id }) |            
+            @Html.ActionLink("Delete", "DeleteLogEntry", new { id = item.Id })
+        </td>
+    </tr>    
+}
+    
+    <tr>
+        <th>
+            Total
+        </th>
+        <th>
+            @ViewBag.TotalCount
+        </th>
+        <th></th>
+    </tr>
+
+</table>

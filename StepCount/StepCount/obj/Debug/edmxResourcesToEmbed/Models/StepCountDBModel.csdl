@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="StepCountDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Team">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Motto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="dbo_Participants" Relationship="StepCountDBModel.FK_dbo_Participants_ToTable" FromRole="Team" ToRole="dbo_Participants" />
+  </EntityType>
+  <EntityContainer Name="StepCountDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Teams" EntityType="Self.Team" />
+    <EntitySet Name="dbo_Participants" EntityType="StepCountDBModel.dbo_Participants" />
+    <AssociationSet Name="FK_dbo_Participants_ToTable" Association="StepCountDBModel.FK_dbo_Participants_ToTable">
+      <End Role="Team" EntitySet="Teams" />
+      <End Role="dbo_Participants" EntitySet="dbo_Participants" />
+    </AssociationSet>
+    <EntitySet Name="LogEntries" EntityType="StepCountDBModel.LogEntry" />
+    <AssociationSet Name="FK_LogEntry_ToTable" Association="StepCountDBModel.FK_LogEntry_ToTable">
+      <End Role="dbo_Participants" EntitySet="dbo_Participants" />
+      <End Role="LogEntry" EntitySet="LogEntries" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="dbo_Participants">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="TeamId" Type="Int32" />
+    <NavigationProperty Name="Team" Relationship="StepCountDBModel.FK_dbo_Participants_ToTable" FromRole="dbo_Participants" ToRole="Team" />
+    <NavigationProperty Name="LogEntries" Relationship="StepCountDBModel.FK_LogEntry_ToTable" FromRole="dbo_Participants" ToRole="LogEntry" />
+  </EntityType>
+  <Association Name="FK_dbo_Participants_ToTable">
+    <End Type="StepCountDBModel.Team" Role="Team" Multiplicity="0..1" />
+    <End Type="StepCountDBModel.dbo_Participants" Role="dbo_Participants" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Team">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="dbo_Participants">
+        <PropertyRef Name="TeamId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="LogEntry">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ParticipantId" Type="Int32" Nullable="false" />
+    <Property Name="LogDate" Type="DateTime" Precision="3" />
+    <Property Name="Steps" Type="Int32" />
+    <NavigationProperty Name="dbo_Participants" Relationship="StepCountDBModel.FK_LogEntry_ToTable" FromRole="LogEntry" ToRole="dbo_Participants" />
+  </EntityType>
+  <Association Name="FK_LogEntry_ToTable">
+    <End Type="StepCountDBModel.dbo_Participants" Role="dbo_Participants" Multiplicity="1" />
+    <End Type="StepCountDBModel.LogEntry" Role="LogEntry" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="dbo_Participants">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="LogEntry">
+        <PropertyRef Name="ParticipantId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

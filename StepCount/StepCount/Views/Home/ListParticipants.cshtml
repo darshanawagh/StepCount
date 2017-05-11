@@ -1,0 +1,55 @@
+﻿@using StepCount.Models
+@model StepCount.Models.Team
+
+@{
+    ViewBag.Title = "ListParticipants";
+}
+
+<h2>List Participants</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateParticipant", new { id = Model.Id })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Participant Name
+        </th>
+        <th>
+            Step Total
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.dbo_Participants.OrderByDescending(x => x.LogEntries != null ? x.LogEntries.Sum(y => y.Steps) : 0)) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @{
+                int? parameterValue = item.LogEntries !=null ? item.LogEntries.Sum(y => y.Steps) : 0;
+            }
+            @Html.DisplayFor(modelItem => parameterValue)
+        </td>
+      
+        <td>
+            @Html.ActionLink("Edit", "EditParticipant", new { id= item.Id }) |            
+            @Html.ActionLink("List Log Entries", "ListLogEntries", new { id = item.Id }) |    
+            @Html.ActionLink("Delete", "DeleteParticipant", new { id = item.Id })
+        </td>
+    </tr>
+}
+    
+    <tr>
+        <th>
+            Team Total
+        </th>
+        <th>
+            @Model.dbo_Participants.Sum(x => x.LogEntries.Sum(y => y.Steps))
+        </th>
+
+        <th></th>
+    </tr>
+
+</table>
