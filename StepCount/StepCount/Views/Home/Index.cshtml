@@ -4,16 +4,16 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h3>Team Listing</h3>
 
 <p>
     @Html.ActionLink("Create New Team", "Create") | @Html.ActionLink("Log My Steps", "CreateLogEntry")
 </p>
 <table class="table">
     <tr>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.Id)
-        </th>
+        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -26,11 +26,12 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model.OrderByDescending(x => x.dbo_Participants!=null? x.dbo_Participants.Sum( y =>  y.LogEntries != null ? y.LogEntries.Sum(z => z.Steps) : 0) : 0)) {
+@foreach (var item in Model.OrderByDescending(x => x.Participants != null ? x.Participants.Sum(y => y.LogEntries != null ? y.LogEntries.Sum(z => z.Steps) : 0) : 0))
+{
     <tr>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.Id)
-        </td>
+        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>
@@ -39,7 +40,7 @@
         </td>
         <td>
             @{
-                int? parameterValue = item.dbo_Participants != null ? item.dbo_Participants.Sum(y => y.LogEntries!=null ? y.LogEntries.Sum(z => z.Steps) : 0) : 0;
+    int? parameterValue = item.Participants != null ? item.Participants.Sum(y => y.LogEntries != null ? y.LogEntries.Sum(z => z.Steps) : 0) : 0;
             }
             @Html.DisplayFor(modelItem => parameterValue)
         </td>

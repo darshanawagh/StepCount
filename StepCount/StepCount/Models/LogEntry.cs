@@ -7,6 +7,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
+
 namespace StepCount.Models
 {
     using System;
@@ -15,10 +17,14 @@ namespace StepCount.Models
     public partial class LogEntry
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Select Participant")]
+        [Range(1, int.MaxValue, ErrorMessage = "Select participant")]
         public int ParticipantId { get; set; }
+
         public Nullable<System.DateTime> LogDate { get; set; }
         public Nullable<int> Steps { get; set; }
     
-        public virtual dbo_Participants dbo_Participants { get; set; }
+        public virtual Participant Participant { get; set; }
     }
 }

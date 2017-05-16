@@ -4,15 +4,13 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create Team</h2>
-
+<h3>Create Team</h3>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>Team</h4>
+    <div class="form-horizontal">        
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">

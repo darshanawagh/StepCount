@@ -167,31 +167,31 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\dbo_Participants.cs">
-      <DependentUpon>StepCountDBModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LogEntry.cs">
-      <DependentUpon>StepCountDBModel.tt</DependentUpon>
+      <DependentUpon>STEPATHALON.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\StepCountDBModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StepCountDBModel.Context.tt</DependentUpon>
+    <Compile Include="Models\Participant.cs">
+      <DependentUpon>STEPATHALON.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\StepCountDBModel.cs">
+    <Compile Include="Models\STEPATHALON.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>StepCountDBModel.tt</DependentUpon>
+      <DependentUpon>STEPATHALON.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\StepCountDBModel.Designer.cs">
+    <Compile Include="Models\STEPATHALON.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>StepCountDBModel.edmx</DependentUpon>
+      <DependentUpon>STEPATHALON.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\STEPATHALON.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>STEPATHALON.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Team.cs">
-      <DependentUpon>StepCountDBModel.tt</DependentUpon>
+      <DependentUpon>STEPATHALON.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -203,33 +203,50 @@
     </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\stepcountlogo.jpg" />
+    <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\jquery-ui.min.css" />
+    <Content Include="Content\jquery-ui.structure.css" />
+    <Content Include="Content\jquery-ui.structure.min.css" />
+    <Content Include="Content\jquery-ui.theme.css" />
+    <Content Include="Content\jquery-ui.theme.min.css" />
+    <Content Include="Content\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\StepCountDBModel.Context.tt">
+    <Content Include="Models\STEPATHALON.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>StepCountDBModel.edmx</DependentUpon>
-      <LastGenOutput>StepCountDBModel.Context.cs</LastGenOutput>
+      <DependentUpon>STEPATHALON.edmx</DependentUpon>
+      <LastGenOutput>STEPATHALON.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\StepCountDBModel.tt">
+    <Content Include="Models\STEPATHALON.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>StepCountDBModel.edmx</DependentUpon>
-      <LastGenOutput>StepCountDBModel.cs</LastGenOutput>
+      <DependentUpon>STEPATHALON.edmx</DependentUpon>
+      <LastGenOutput>STEPATHALON.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\StepCountDBModel.edmx">
+    <EntityDeploy Include="Models\STEPATHALON.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>StepCountDBModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>STEPATHALON.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\StepCountDBModel.edmx.diagram">
-      <DependentUpon>StepCountDBModel.edmx</DependentUpon>
+    <Content Include="Models\STEPATHALON.edmx.diagram">
+      <DependentUpon>STEPATHALON.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\StepCount.pubxml" />
+    <None Include="Properties\PublishProfiles\StepCountLocal.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -245,7 +262,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />

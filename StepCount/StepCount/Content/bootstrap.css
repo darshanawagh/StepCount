@@ -522,6 +522,7 @@ h2,
 h3,
 .h3 {
   font-size: 24px;
+ 
 }
 
 h4,
@@ -536,7 +537,7 @@ h5,
 
 h6,
 .h6 {
-  font-size: 12px;
+  font-size: 12px;    
 }
 
 h1 small,
@@ -6814,3 +6815,4 @@ td.visible-print {
     display: none !important;
   }
 }
+

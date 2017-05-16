@@ -14,7 +14,8 @@ namespace StepCount.Controllers
     public class HomeController : Controller
     {
 
-        private StepCountDBEntities _db = new StepCountDBEntities(); 
+        //private StepCountDBEntities _db = new StepCountDBEntities(); 
+        private STEPATHALONEntities _db = new STEPATHALONEntities(); 
         // GET: Home
 
 #region team
@@ -91,6 +92,8 @@ namespace StepCount.Controllers
             var teamToDelete = (from team in _db.Teams
                                 where team.Id == id
                                 select team).First();
+            _db.LogEntries.RemoveRange(teamToDelete.Participants.SelectMany(x => x.LogEntries));
+            _db.Participants.RemoveRange(teamToDelete.Participants);
             _db.Teams.Remove(teamToDelete);
             _db.SaveChanges();
 
@@ -111,7 +114,7 @@ namespace StepCount.Controllers
         #region create
         public ActionResult CreateParticipant(int id)
         {
-            dbo_Participants p = new dbo_Participants();
+            Participant p = new Participant();
             p.Team = (from team in _db.Teams
                           where team.Id == id
                           select team).First();
@@ -121,13 +124,13 @@ namespace StepCount.Controllers
         }
         
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CreateParticipant([Bind(Exclude = "Id")] dbo_Participants participants)
+        public ActionResult CreateParticipant([Bind(Exclude = "Id")] Participant participants)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return View();
-                _db.dbo_Participants.Add(participants);
+                _db.Participants.Add(participants);
                 _db.SaveChanges();
                 
                 return RedirectToAction("ListParticipants", new{Id = participants.TeamId});
@@ -142,7 +145,7 @@ namespace StepCount.Controllers
         #region edit
         public ActionResult EditParticipant(int id)
         {
-            var participants = (from p in _db.dbo_Participants
+            var participants = (from p in _db.Participants
                               where p.Id == id
                               select p).First();
 
@@ -150,18 +153,18 @@ namespace StepCount.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult EditParticipant(dbo_Participants participants)
+        public ActionResult EditParticipant(Participant participants)
         {
             try
             {
-                var participantsOriginal = (from p in _db.dbo_Participants
+                var participantsOriginal = (from p in _db.Participants
                                             where p.Id == participants.Id
                                           select p).First();
 
                 if (!ModelState.IsValid)
                     return View(participantsOriginal);
 
-                _db.dbo_Participants.AddOrUpdate(participants);
+                _db.Participants.AddOrUpdate(participants);
                 _db.SaveChanges();
                 return RedirectToAction("ListParticipants", new { Id = participants.TeamId });
             }
@@ -175,11 +178,12 @@ namespace StepCount.Controllers
 
         public ActionResult DeleteParticipant(int id)
         {           
-            var pToDelete = (from p in _db.dbo_Participants
+            var pToDelete = (from p in _db.Participants
                                 where p.Id == id
                                 select p).First();
             var team = pToDelete.TeamId;
-            _db.dbo_Participants.Remove(pToDelete);
+            _db.LogEntries.RemoveRange(pToDelete.LogEntries);
+            _db.Participants.Remove(pToDelete);
             _db.SaveChanges();
 
             return RedirectToAction("ListParticipants", new { Id = team });
@@ -191,7 +195,7 @@ namespace StepCount.Controllers
         #region create
         public ActionResult CreateLogEntry()
         {
-            var allParticipants = _db.dbo_Participants.ToList();
+            var allParticipants = _db.Participants.ToList();
             ViewBag.Participants = allParticipants;
             return View();            
         }
@@ -202,7 +206,11 @@ namespace StepCount.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                    return View();
+                {
+                    var allParticipants = _db.Participants.ToList();
+                    ViewBag.Participants = allParticipants;
+                    return View(logEntry);
+                }
                 _db.LogEntries.Add(logEntry);
                 _db.SaveChanges();
 
@@ -218,7 +226,7 @@ namespace StepCount.Controllers
         #region list
         public ActionResult ListLogEntries(int id)
         {
-            var participant = (from p in _db.dbo_Participants
+            var participant = (from p in _db.Participants
                               where p.Id == id
                               select p).First();
             return View(participant);

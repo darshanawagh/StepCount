@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="STEPATHALONModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LogEntry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ParticipantId" Type="int" Nullable="false" />
+          <Property Name="LogDate" Type="datetime" />
+          <Property Name="Steps" Type="int" />
+        </EntityType>
+        <EntityType Name="Participants">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="TeamId" Type="int" />
+        </EntityType>
+        <EntityType Name="Teams">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Motto" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_LogEntry_ToTable">
+          <End Role="Participants" Type="Self.Participants" Multiplicity="1" />
+          <End Role="LogEntry" Type="Self.LogEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Participants">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LogEntry">
+              <PropertyRef Name="ParticipantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Participants_ToTable">
+          <End Role="Teams" Type="Self.Teams" Multiplicity="0..1" />
+          <End Role="Participants" Type="Self.Participants" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Participants">
+              <PropertyRef Name="TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="STEPATHALONModelStoreContainer">
+          <EntitySet Name="LogEntry" EntityType="Self.LogEntry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Participants" EntityType="Self.Participants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Teams" EntityType="Self.Teams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_LogEntry_ToTable" Association="Self.FK_LogEntry_ToTable">
+            <End Role="Participants" EntitySet="Participants" />
+            <End Role="LogEntry" EntitySet="LogEntry" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Participants_ToTable" Association="Self.FK_Participants_ToTable">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="Participants" EntitySet="Participants" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="STEPATHALONModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="LogEntry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParticipantId" Type="Int32" Nullable="false" />
+          <Property Name="LogDate" Type="DateTime" Precision="3" />
+          <Property Name="Steps" Type="Int32" />
+          <NavigationProperty Name="Participant" Relationship="Self.FK_LogEntry_ToTable" FromRole="LogEntry" ToRole="Participants" />
+        </EntityType>
+        <EntityType Name="Participant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TeamId" Type="Int32" />
+          <NavigationProperty Name="LogEntries" Relationship="Self.FK_LogEntry_ToTable" FromRole="Participants" ToRole="LogEntry" />
+          <NavigationProperty Name="Team" Relationship="Self.FK_Participants_ToTable" FromRole="Participants" ToRole="Teams" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Motto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Participants" Relationship="Self.FK_Participants_ToTable" FromRole="Teams" ToRole="Participants" />
+        </EntityType>
+        <Association Name="FK_LogEntry_ToTable">
+          <End Role="Participants" Type="Self.Participant" Multiplicity="1" />
+          <End Role="LogEntry" Type="Self.LogEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Participants">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LogEntry">
+              <PropertyRef Name="ParticipantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Participants_ToTable">
+          <End Role="Teams" Type="Self.Team" Multiplicity="0..1" />
+          <End Role="Participants" Type="Self.Participant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teams">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Participants">
+              <PropertyRef Name="TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="STEPATHALONEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="LogEntries" EntityType="Self.LogEntry" />
+          <EntitySet Name="Participants" EntityType="Self.Participant" />
+          <EntitySet Name="Teams" EntityType="Self.Team" />
+          <AssociationSet Name="FK_LogEntry_ToTable" Association="Self.FK_LogEntry_ToTable">
+            <End Role="Participants" EntitySet="Participants" />
+            <End Role="LogEntry" EntitySet="LogEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Participants_ToTable" Association="Self.FK_Participants_ToTable">
+            <End Role="Teams" EntitySet="Teams" />
+            <End Role="Participants" EntitySet="Participants" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="STEPATHALONModelStoreContainer" CdmEntityContainer="STEPATHALONEntities">
+          <EntitySetMapping Name="LogEntries">
+            <EntityTypeMapping TypeName="STEPATHALONModel.LogEntry">
+              <MappingFragment StoreEntitySet="LogEntry">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ParticipantId" ColumnName="ParticipantId" />
+                <ScalarProperty Name="LogDate" ColumnName="LogDate" />
+                <ScalarProperty Name="Steps" ColumnName="Steps" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Participants">
+            <EntityTypeMapping TypeName="STEPATHALONModel.Participant">
+              <MappingFragment StoreEntitySet="Participants">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TeamId" ColumnName="TeamId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teams">
+            <EntityTypeMapping TypeName="STEPATHALONModel.Team">
+              <MappingFragment StoreEntitySet="Teams">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Motto" ColumnName="Motto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

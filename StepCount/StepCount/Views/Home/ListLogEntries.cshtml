@@ -1,15 +1,19 @@
-﻿@model StepCount.Models.dbo_Participants
+﻿@model StepCount.Models.Participant
 
 @{
     ViewBag.Title = "ListLogEntries";
     ViewBag.TotalCount = @Model.LogEntries != null ? @Model.LogEntries.Sum(x => x.Steps) : 0;
 }
 
-<h2>List Log Entries</h2>
+<h3>List Log Entries</h3>
 
 <p>
     @Html.ActionLink("Create New", "CreateLogEntry")
 </p>
+
+<div class="form-group team-name">
+    @Html.Label(Model.Team.Name)  -  @Html.Label(Model.Name)
+</div>
 <table class="table">
     <tr>
         <th>
@@ -24,7 +28,8 @@
 @foreach (var item in Model.LogEntries) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.LogDate)
+            @{ string dateStr = item.LogDate.Value.ToString("d");}
+            @Html.DisplayFor(modelItem => dateStr)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Steps)

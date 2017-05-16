@@ -1,22 +1,21 @@
-﻿@model StepCount.Models.dbo_Participants
+﻿@model StepCount.Models.Participant
 
 @{
     ViewBag.Title = "CreateParticipant";
 }
 
-<h2>Create Participant</h2>
+<h3>Create Participant</h3>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>Add Participant</h4>
+    <div class="form-horizontal">        
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.Label(Model.Team.Name);
-            @Html.HiddenFor(x => x.TeamId);
+        <div class="form-group team-name">
+            @Html.Label(Model.Team.Name)
+            @Html.HiddenFor(x => x.TeamId)
         </div>
 
         <div class="form-group">

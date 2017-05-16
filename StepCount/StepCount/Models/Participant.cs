@@ -7,22 +7,27 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.ComponentModel.DataAnnotations;
+
 namespace StepCount.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Team
+    public partial class Participant
     {
-        public Team()
+        public Participant()
         {
-            this.Participants = new HashSet<Participant>();
+            this.LogEntries = new HashSet<LogEntry>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Motto { get; set; }
+
+        [Required(ErrorMessage = "Team Id is required")]
+        public Nullable<int> TeamId { get; set; }
     
-        public virtual ICollection<Participant> Participants { get; set; }
+        public virtual ICollection<LogEntry> LogEntries { get; set; }
+        public virtual Team Team { get; set; }
     }
 }
